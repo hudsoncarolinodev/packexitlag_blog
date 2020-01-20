@@ -170,3 +170,9 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+
+function custom_excerpt_length( $length ) {
+ return 30;
+}
+add_filter( 'excerpt_length', 'custom_excerpt_length');
+

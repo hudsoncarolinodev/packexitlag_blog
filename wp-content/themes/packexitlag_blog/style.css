@@ -140,7 +140,7 @@
 .nav-blog ul li a:hover::after{ width: 100%; }
 .active-link-blog{ color: #a10a0b !important; } 
 .active-link-blog::after{ background-color: #a10a0b !important; width: 100%!important; } 
-.search-blog{ width: 320px; border: 2px solid #a1a1a1; border-radius: 30px; padding: 11px 20px; display: flex; justify-content: space-between; }
+.search-blog{ width: 325px; border: 2px solid #a1a1a1; border-radius: 30px; padding: 11px 20px; display: flex; justify-content: space-between; }
 .search-blog input{ background-color: transparent; color: #a1a1a1; font-size: 18px; font-weight: 700; }
 .search-blog input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */ color: #a1a1a1; opacity: 1; font-weight: 700; font-size: 18px; /* Firefox */ }
 .search-blog input:-ms-input-placeholder { /* Internet Explorer 10-11 */ color: #a1a1a1; font-weight: 700; font-size: 18px; }

@@ -22,10 +22,10 @@ get_header();
 				<div class="scroll-nav-mobile">
 					<ul>
 					<li>
-						<a class="transition active-link-blog" href="blog.html">Início</a>
+						<a class="transition active-link-blog" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
 					</li>
 					<li>
-						<a class="transition" href="todos-posts.html">Todos os posts</a>
+						<a class="transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">Todos os posts</a>
 					</li>
 					<?php
 						$i =0;
@@ -55,149 +55,105 @@ get_header();
 	<section class="section-content-blog">
 		<div class="container">
 			<?php 
-				$taxonomia = 'category';
-				$listarEmpreendimentos = get_terms( $taxonomia, array(
-					'orderby'    => 'count',
-					'hide_empty' => 0,
-					'parent'	 => 0
-				));
-					
+				$postDestaque = new WP_Query(
+					array(
+						'post_type' => 'post',
+						'posts_per_page' => 1, 
+						'orderby' => 'id',
+						'tax_query' => array(
+							array(
+								'taxonomy' => "category",
+								'field'    => 'slug',
+								'terms'    => "destaques",
+							)
+						)
+					)
+				);
 			?>
 
-			<a href="post.html" class="main-post-blog">
-				<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-lg/post-06.jpg" alt="The best upcoming games to keep an eye on this year and the next">
+			<?php
+			while($postDestaque->have_posts()): $postDestaque->the_post();
+				$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
+				$categoriasPost = get_the_category();
+				foreach ($categoriasPost as $categoria){
+					$categoriaPostNome = $categoria->name;
+					$categoriaPostLink = get_category_link($categoria->cat_ID);
+				}
+			?>
+			<a href="<?php echo get_permalink() ?>" class="main-post-blog">
+				<img src="<?php echo $imagem_destaque; ?>" alt="<?php echo get_the_title()?>">
 				<div class="contain-main-post-blog">
 					<div class="content-main-post-blog">
-						<p>09 de setembro de 2019</p>
-						<h2>The best upcoming games to keep an eye on this year and the next</h2>
+						<p><?php echo the_time('j M Y'); ?></p>
+						<h2><?php echo get_the_title()?></h2>
 					</div>
 					<div class="star-main-post-blog">
 						<span class="far fa-star"></span>
-						<p>Destaque</p>
+						<p><?= $categoriaPostNome; ?></p>
 					</div>
 				</div>
 			</a>
+			<?php endwhile; ?>
 
 			<div class="contain-block-posts-blog">
 				<h2>Os mais populares</h2>
 				<div class="block-post-blog flex">
-					<a href="post.html" class="each-post-blog">
+					<?php 
+						$args = ['numberposts' => 3];
+						$recent_posts = wp_get_recent_posts( $args, ARRAY_A );
+						foreach($recent_posts as $recent_posts):
+								$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($recent_posts['ID'] ), 'full' )[0];
+					?>
+					<a href="<?php echo  get_permalink($recent_posts['ID']) ?>" class="each-post-blog">
 						<div class="img-post-blog">
-							<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-md/post-01.jpg" alt="The best multiplayer PC games 2019: Top competitive games to play today">
+							<img src="<?php echo $imagem_destaque ?>" alt="<?php echo $recent_posts['post_title'] ?>">
 						</div>
-						<h3 class="title-post-blog">The best multiplayer PC games 2019: Top competitive games to play today</h3>
+						<h3 class="title-post-blog"><?php echo $recent_posts['post_title'] ?></h3>
 						<div class="cat-post-blog flex">
 							<p>07 de de setembro de 2019 </p>
 							<span>|</span>
 							<p>Jogos</p>
 						</div>
 					</a>
-
-					<a href="post.html" class="each-post-blog">
-						<div class="img-post-blog">
-							<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-md/post-02.jpg" alt="Fortnite is back...But It never really went anywhere">
-						</div>
-						<h3 class="title-post-blog">Fortnite is back...But It never really went anywhere</h3>
-						<div class="cat-post-blog flex">
-							<p>05 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-					</a>
-
-					<a href="post.html" class="each-post-blog">
-						<div class="img-post-blog">
-							<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-md/post-03.jpg" alt="Legends of Runeterra: All you need to know about Riot's new game">
-						</div>
-						<h3 class="title-post-blog">Legends of Runeterra: All you need to know about Riot's new game</h3>
-						<div class="cat-post-blog flex">
-							<p>03 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-					</a>
+				  <?php endforeach;?>
 				</div>
 			</div>
 			
 			<div class="contain-block-posts-blog">
 				<h2>Últimos posts</h2>
+				<?php 
+					$posts = new WP_Query(
+						array(
+							'post_type' => 'post',
+							'posts_per_page' => 5, 
+							'orderby' => 'id',
+						)
+					);
 
-				<a href="post.html" class="each-post-blog margin-each-post-blog flex">
+					while($posts->have_posts()): $posts->the_post();
+						$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
+						$categoriasPost = get_the_category();
+						foreach ($categoriasPost as $categoria){
+							$categoriaPostNome = $categoria->name;
+							$categoriaPostLink = get_category_link($categoria->cat_ID);
+						}
+				?>
+				<a href="<?php echo get_permalink() ?>" class="each-post-blog margin-each-post-blog flex">
 					<div class="img-post-blog">
-						<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-sm/post-01.jpg" alt="The best multiplayer PC games 2019: Top competitive games to play today">
+						<img src="<?php echo $imagem_destaque; ?>" alt="<?php echo get_the_title()?>">
 					</div>
 					<div class="container-post-blog">
-						<h3 class="title-post-blog">The best multiplayer PC games 2019: Top competitive games to play today</h3>
+						<h3 class="title-post-blog"><?php echo get_the_title()?></h3>
 						<div class="cat-post-blog flex">
-							<p>07 de de setembro de 2019 </p>
+							<p><?php echo the_time('j M Y'); ?></p>
 							<span>|</span>
-							<p>Jogos</p>
+							<p><?= $categoriaPostNome; ?></p>
 						</div>
-						<p class="paragraph-post-blog">Welcome to our pick of the best multiplayer PC games of 2019.  If videogames are defined by competition, then there’s nothing more gamey than drawing your controller from its holster and taking on other players. Whether you’re rubbing shoulders with your frenemies on the couch or taking on the world...</p>
+						<p class="paragraph-post-blog"><?php the_excerpt(); ?></p>
 					</div>					
 				</a>
-
-				<a href="post.html" class="each-post-blog margin-each-post-blog flex">
-					<div class="img-post-blog">
-						<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-sm/post-02.jpg" alt="Fortnite is back...But It never really went anywhere">
-					</div>
-					<div class="container-post-blog">
-						<h3 class="title-post-blog">Fortnite is back...But It never really went anywhere</h3>
-						<div class="cat-post-blog flex">
-							<p>05 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-						<p class="paragraph-post-blog">Fortnite is back for another round with Chapter 2, which launched (again) worldwide yesterday. After a massive world-ending black hole event - dubbed “The End” - consumed everything (which included the previous island, lobby, and game itself), Fortnite has finally returned after being offline for almost 40 hours...</p>
-					</div>					
-				</a>
-
-				<a href="post.html" class="each-post-blog margin-each-post-blog flex">
-					<div class="img-post-blog">
-						<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-sm/post-03.jpg" alt="Legends of Runeterra: All you need to know about Riot's new game">
-					</div>
-					<div class="container-post-blog">
-						<h3 class="title-post-blog">Legends of Runeterra: All you need to know about Riot's new game</h3>
-						<div class="cat-post-blog flex">
-							<p>03 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-						<p class="paragraph-post-blog">Legends of Runeterra is a brand new digital card game from Riot Games. It was just announced as part of Riot’s ten year anniversary stream (along with a number of other hugely exciting projects), and will give players a whole new look at the world of League of Legends, bringing many of its iconic champions to life in a whole new way...</p>
-					</div>					
-				</a>
-
-				<a href="post.html" class="each-post-blog margin-each-post-blog flex">
-					<div class="img-post-blog">
-						<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-sm/post-04.jpg" alt="Apex Legends gets a firing range and Daily Challenge re-rolls">
-					</div>
-					<div class="container-post-blog">
-						<h3 class="title-post-blog">Apex Legends gets a firing range and Daily Challenge re-rolls</h3>
-						<div class="cat-post-blog flex">
-							<p>02 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-						<p class="paragraph-post-blog">Fortnite is back for another round with Chapter 2, which launched (again) worldwide yesterday. After a massive world-ending black hole event - dubbed “The End” - consumed everything (which included the previous island, lobby, and game itself), Fortnite has finally returned after being offline for almost 40 hours...</p>
-					</div>					
-				</a>
-
-				<a href="post.html" class="each-post-blog margin-each-post-blog flex">
-					<div class="img-post-blog">
-						<img src="<?php echo get_template_directory_uri(); ?>/img/blog/img-post-sm/post-05.jpg" alt="Network Maitenance">
-					</div>
-					<div class="container-post-blog">
-						<h3 class="title-post-blog">Network Maitenance</h3>
-						<div class="cat-post-blog flex">
-							<p>01 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-						<p class="paragraph-post-blog">We will be performing upgrades and network maintenance on all our servers. During this maintenance window unavailability is expected. Scheduled timeframe: Start: Thursday July 25 2019 at 17:00 UTC / July 25 14:00 BRT End: Thursday July 25 2019 at 18:00 UTC / July 25 15:00 BRT...</p>
-					</div>					
-				</a>
-
-				<a class="button-all-posts-blog transition" href="todos-posts.html">ver todos os posts <span class="fas fa-angle-right"></span></a>
+				<?php endwhile; ?>
+				<a class="button-all-posts-blog transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">ver todos os posts <span class="fas fa-angle-right"></span></a>
 
 			</div>
 		</div>
