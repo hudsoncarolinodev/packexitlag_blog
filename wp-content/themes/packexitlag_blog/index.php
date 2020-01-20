@@ -164,7 +164,7 @@ get_header();
 			<div class="content-free-test">
 				<h3>Teste grátis por 3 dias,</h3>
 				<h3>sem cadastro do cartão de crédito! Conheça o ExitLag.</h3>
-				<a class="button-teste-gratis transition" href="cadastro.html">Teste Grátis<span class="fas fa-angle-right"></span></a>			
+				<a class="button-teste-gratis transition" href="https://www.exitlag.com/pt/teste-gratis">Teste Grátis<span class="fas fa-angle-right"></span></a>			
 			</div>					
 		</div>
 	</section>

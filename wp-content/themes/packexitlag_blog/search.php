@@ -10,46 +10,47 @@
 get_header();
 ?>
 
-	<section id="primary" class="content-area">
-		<main id="main" class="site-main">
 
-		<?php if ( have_posts() ) : ?>
+<section class="section-content-blog">
+	<div class="container">		
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
+		<div class="contain-block-posts-blog">
+			<h2><?php
 					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'packexitlag_blog' ), '<span>' . get_search_query() . '</span>' );
+					printf( esc_html__( 'Resultado da pesquisa por: %s', 'packexitlag_blog' ), '<span>' . get_search_query() . '</span>' );
 					?>
-				</h1>
-			</header><!-- .page-header -->
+				</h1></h2>
 
 			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+				while(have_posts()): the_post();
+					$imagem_post = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
+					$categoriasPost = get_the_category();
+			?>
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
+			<a href="post.html" class="each-post-blog margin-each-post-blog flex">
+				<div class="img-post-blog">
+					<img src="<?php echo $imagem_post; ?>" alt="<?php echo get_the_title(); ?>">
+				</div>
+				<div class="container-post-blog">
+					<h3 class="title-post-blog"><?php echo get_the_title(); ?></h3>
+					<div class="cat-post-blog flex">
+						<p><?php echo the_date('j \d\e F \d\e Y') ; ?></p>
+						<span>|</span>
+						<?php 
+							foreach ($categoriasPost as $categoria){
+								echo '<p>' . $categoria->name . '</p>';
+							}
+						?>
+					</div>
+					<p class="paragraph-post-blog"><?php echo get_the_excerpt(); ?></p>
+				</div>					
+			</a>
 
-			endwhile;
+			<?php endwhile; wp_reset_query(); ?>
 
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
-		?>
-
-		</main><!-- #main -->
-	</section><!-- #primary -->
-
+			
+		</div>
+	</div>
+</section>
 <?php
-get_sidebar();
 get_footer();

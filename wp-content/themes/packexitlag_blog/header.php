@@ -55,25 +55,25 @@
 			</div>
 			<ul class="menu flex hide-992 show-992-min">
 				<li class="transition">
-					<a class="transition" href="jogos.html">Jogos</a>
+					<a class="transition" href="https://www.exitlag.com/pt/jogos/">Jogos</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="como-funciona.html">Como Funciona</a>
+					<a class="transition" href="https://www.exitlag.com/pt/como-funciona">Como Funciona</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="afiliados.html">Afiliados</a>
+					<a class="transition" href="https://www.exitlag.com/pt/afiliados/">Afiliados</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="preco.html">Preço</a>
+					<a class="transition" href="https://www.exitlag.com/pt/preco/">Preço</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="suporte.html">Suporte</a>
+					<a class="transition" href="https://www.exitlag.com/pt/suporte/">Suporte</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="minha-conta.html">Minha Conta</a>
+					<a class="transition" href="https://www.exitlag.com/pt/login/">Minha Conta</a>
 				</li>
 				<li class="transition">
-					<a class="transition" href="cadastro.html">Teste Grátis <span class="fas fa-angle-right"></span></a>
+					<a class="transition" href="https://www.exitlag.com/pt/teste-gratis/">Teste Grátis <span class="fas fa-angle-right"></span></a>
 				</li>
 			</ul>
 		</div>			

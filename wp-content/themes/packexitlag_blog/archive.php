@@ -15,31 +15,35 @@ get_header();
 		<h1>Blog</h1>
 		<nav class="nav-blog">
 			<div class="scroll-nav-mobile">
-				<ul>
-					<li>
-						<a class="transition" href="blog.html">Início</a>
-					</li>
-					<li>
-						<a class="transition" href="todos-posts.html">Todos os posts</a>
-					</li>
-					<li>
-						<a class="transition" href="updates.html">Updates</a>
-					</li>
-					<li>
-						<a class="transition active-link-blog" href="destaques.html">Destaques</a>
-					</li>
-					<li>
-						<a class="transition" href="novidades.html">Novidades</a>
-					</li>
-					<li>
-						<a class="transition" href="jogos.html">Jogos</a>
-					</li>
-				</ul>
+				<div class="scroll-nav-mobile">
+					<ul>
+						<li>
+							<a class="transition active-link-blog" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
+						</li>
+						<li>
+							<a class="transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">Todos os posts</a>
+						</li>
+						<?php
+							$i =0;
+							$categorias = get_categories();
+							foreach ($categorias as $categorias):
+								$nomeCategoria = $categorias->name;
+								$linkCategoria = get_category_link( $categorias->cat_ID );
+								if($i <5):
+						?>
+						<li>
+							<a  class="transition" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
+						</li>
+						<?php endif;$i++; endforeach; ?>
+					</ul>
+				</div>
 			</div>
 
 			<div class="search-blog">
-				<input type="text" name="search-blog" id="search-blog" placeholder="Buscar">
-				<button class="fas fa-search"></button>
+				<form role="search" method="get" action="<?php echo home_url( '/' ); ?>">
+					<input type="text" name="s" id="search" placeholder="Buscar">
+					<button type="submit" class="fas fa-search"></button>
+				</form>
 			</div>
 		</nav>
 		<span class="border-cat-blog-post"></span>

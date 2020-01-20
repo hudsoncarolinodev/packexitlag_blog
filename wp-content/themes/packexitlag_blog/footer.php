@@ -22,16 +22,16 @@
 						<h3>Exitlag</h3>
 						<ul>							
 							<li>
-								<a href="preco.html">Preço</a>
+								<a href="https://www.exitlag.com/pt/preco">Preço</a>
 							</li>
 							<li>
-								<a href="minha-conta.html">Minha conta</a>
+								<a href="https://www.exitlag.com/pt/login">Minha conta</a>
 							</li>							
 							<li>
 								<a href="blog.html">Blog</a>
 							</li>
 							<li>
-								<a href="download.html">Download</a>
+								<a href="https://www.exitlag.com/pt/download">Download</a>
 							</li>
 						</ul>
 					</div>					
@@ -41,7 +41,7 @@
 						<h3>Conheça</h3>
 						<ul>
 							<li>
-								<a href="como-funciona.html">Como Funciona</a>
+								<a href="https://www.exitlag.com/pt/como-funciona">Como Funciona</a>
 							</li>
 							<li>
 								<a href="jogos.html">Jogos suportados</a>
@@ -57,13 +57,13 @@
 						<h3>Ajuda</h3>
 						<ul>
 							<li>
-								<a href="suporte.html">Suporte</a>
+								<a href="https://www.exitlag.com/pt/suporte">Suporte</a>
 							</li>
 							<li>
-								<a href="perguntas-frequentes.html">Perguntas Frequentes</a>
+								<a href="https://www.exitlag.com/pt/perguntas-frequentes">Perguntas Frequentes</a>
 							</li>
 							<li>
-								<a href="tutorial.html">Tutorial</a>
+								<a href="https://www.exitlag.com/pt/como-usar">Tutorial</a>
 							</li>												
 						</ul>
 					</div>
