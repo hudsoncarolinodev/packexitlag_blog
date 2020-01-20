@@ -26,7 +26,7 @@ define( 'DB_NAME', 'projetos_packexitlag_blog' );
 define( 'DB_USER', 'root' );
 
 /** Senha do banco de dados MySQL */
-define( 'DB_PASSWORD', '' );
+define( 'DB_PASSWORD', '123' );
 
 /** Nome do host do MySQL */
 define( 'DB_HOST', 'localhost' );

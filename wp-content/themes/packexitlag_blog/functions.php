@@ -170,9 +170,90 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/********************************************
+			FUNCÕES EXTRAS
+*********************************************/
+	//REDUX FRAMEWORK
+	if (class_exists('ReduxFramework')) {
+		require_once (get_template_directory() . '/redux/sample-config.php');
+	}
 
-function custom_excerpt_length( $length ) {
- return 30;
-}
-add_filter( 'excerpt_length', 'custom_excerpt_length');
+	//REGISTRAR SVG
+	function cc_mime_types($mimes) {
+	  $mimes['svg'] = 'image/svg+xml';
+	  return $mimes;
+	}
+	add_filter('upload_mimes', 'cc_mime_types');
+
+	//PAGINAÇÃO
+	function pagination($pages = '', $range = 4){
+	    $showitems = ($range * 2)+1;
+	    global $paged;
+	    if(empty($paged)) $paged = 1;
+
+	    if($pages == ''){
+	        global $wp_query;
+	        $pages = $wp_query->max_num_pages;
+	        if(!$pages){
+	            $pages = 1;
+	        }
+	    }
+
+	    if(1 != $pages){
+
+	        echo "<div class=\"paginador\">";
+	        //if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo "<a href='".get_pagenum_link(1)."'>&laquo; First</a>";
+	        //if($paged > 1 && $showitems < $pages) echo "<a href='".get_pagenum_link($paged - 1)."'>&lsaquo; Previous</a>";
+			$htmlPaginas = "";
+	        for ($i=1; $i <= $pages; $i++){
+	            if (1 != $pages &&( !($i >= $paged+$range+1 || $i <= $paged-$range-1) || $pages <= $showitems )){
+	                $htmlPaginas .= ($paged == $i)? '<a href="' . get_pagenum_link($i) . '" class="numero selecionado">' . $i . '</a>' : '<a href="' . get_pagenum_link($i) . '" class="numero">' . $i . '</a>';
+	            }
+
+	        }
+
+	        if ($paged < $pages && $showitems < $pages) echo '<a href="' . get_pagenum_link($paged + 1) . '" class="esquerda"><i class="fa fa-chevron-left" aria-hidden="true"></a></i></a>';
+	        	echo $htmlPaginas;
+
+			if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo '<a href="' . get_pagenum_link($pages) . '" class="direita"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>';
+
+	        	echo "</div>\n";
+
+		}
+
+	}
+
+	//FUNÇÃO DE ABREVIAÇÃO DE CARACTER
+	function customExcerpt($qtdCaracteres) {
+	  $excerpt = get_the_excerpt();
+	  $qtdCaracteres++;
+	  if ( mb_strlen( $excerpt ) > $qtdCaracteres ) {
+	    $subex = mb_substr( $excerpt, 0, $qtdCaracteres - 5 );
+	    $exwords = explode( ' ', $subex );
+	    $excut = - ( mb_strlen( $exwords[ count( $exwords ) - 1 ] ) );
+	    if ( $excut < 0 ) {
+	      echo mb_substr( $subex, 0, $excut );
+	    } else {
+	      echo $subex;
+	    }
+
+	    echo '...';
+	  }else{
+	    echo $excerpt;
+	  }
+
+	}
+
+	// VERSIONAMENTO DE FOLHAS DE ESTILO
+	function my_wp_default_styles($styles){
+		$styles->default_version = "13012020";
+	}
+	
+	add_action("wp_default_styles", "my_wp_default_styles");
+
+ 	// VERSIONAMENTO DE FOLHAS DE ESTILO
+	function my_wp_default_scripts($scripts){
+		$scripts->default_version = "13012020";
+	}
+	add_action("wp_default_scripts", "my_wp_default_scripts");
 
