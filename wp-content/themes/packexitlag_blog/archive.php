@@ -6,6 +6,8 @@
  *
  * @package packexitlag_blog
  */
+$current_category = get_queried_object();
+
 
 get_header();
 ?>
@@ -18,10 +20,10 @@ get_header();
 				<div class="scroll-nav-mobile">
 					<ul>
 						<li>
-							<a class="transition active-link-blog" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
+							<a class="transition" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
 						</li>
 						<li>
-							<a class="transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">Todos os posts</a>
+							<a class="transition" href="<?php echo esc_url( home_url( '/todos-os-posts/' ) ); ?>">Todos os posts</a>
 						</li>
 						<?php
 							$i =0;
@@ -29,10 +31,11 @@ get_header();
 							foreach ($categorias as $categorias):
 								$nomeCategoria = $categorias->name;
 								$linkCategoria = get_category_link( $categorias->cat_ID );
+
 								if($i <5):
 						?>
 						<li>
-							<a  class="transition" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
+							<a  class="transition <?php if($current_category->name == $categorias->name){echo "active-link-blog";}?>" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
 						</li>
 						<?php endif;$i++; endforeach; ?>
 					</ul>
@@ -54,7 +57,7 @@ get_header();
 	<div class="container">		
 
 		<div class="contain-block-posts-blog">
-			<h2>Destaques</h2>
+			<h2><?php echo $current_category->name?></h2>
 
 			<?php
 				while(have_posts()): the_post();
@@ -62,18 +65,22 @@ get_header();
 					$categoriasPost = get_the_category();
 			?>
 
-			<a href="post.html" class="each-post-blog margin-each-post-blog flex">
+			<a href="<?php echo get_permalink();?>" class="each-post-blog margin-each-post-blog flex">
 				<div class="img-post-blog">
 					<img src="<?php echo $imagem_post; ?>" alt="<?php echo get_the_title(); ?>">
 				</div>
 				<div class="container-post-blog">
 					<h3 class="title-post-blog"><?php echo get_the_title(); ?></h3>
 					<div class="cat-post-blog flex">
-						<p><?php echo the_date('j \d\e F \d\e Y') ; ?></p>
+						<p><?php echo the_time('j \d\e F \d\e Y') ; ?></p>
 						<span>|</span>
 						<?php 
+							$cont = 0;
 							foreach ($categoriasPost as $categoria){
-								echo '<p>' . $categoria->name . '</p>';
+								if($cont == 0){
+									echo '<p>' . $categoria->name . '</p>';
+								}
+								$cont ++;
 							}
 						?>
 					</div>
@@ -84,27 +91,37 @@ get_header();
 			<?php endwhile; wp_reset_query(); ?>
 
 			<div class="pagination-blog">
-				<button class="fas fa-angle-left"></button>
+				<!-- <button class="fas fa-angle-left"></button>
 				<div class="box-pagination-blog">
 					1
 				</div>
 				<button class="fas fa-angle-right"></button>
 				<p>de</p>
-				<p>50</p>
+				<p>50</p> -->
+				<div class="paginador">
+					<?php 
+					if(function_exists('pagination')){
+						pagination($additional_loop->$max_num_pages);
+					}
+					?>
+				</div>
 			</div>
-
 		</div>
 	</div>
 </section>
 
+<?php if($configuracao['opt_box_vermelho_titulo']):?>
 <section class="section-knowing">		
 	<div class="contain-free-test">			
 		<div class="content-free-test">
-			<h3>Teste grátis por 3 dias,</h3>
-			<h3>sem cadastro do cartão de crédito! Conheça o ExitLag.</h3>
-			<a class="button-teste-gratis transition" href="cadastro.html">Teste Grátis<span class="fas fa-angle-right"></span></a>			
+			
+			<h3><?php echo $configuracao['opt_box_vermelho_titulo']; ?></h3>
+			<?php 	 if($configuracao['opt_box_vermelho_tituloLink']): ?>
+			<a class="button-teste-gratis transition" href="<?php echo $configuracao['opt_box_vermelho_tituloLink']; ?>">Teste Grátis<span class="fas fa-angle-right"></span></a>	
+			<?php endif; ?>		
 		</div>					
 	</div>
 </section>
+<?php endif;	?>
 
 <?php get_footer();

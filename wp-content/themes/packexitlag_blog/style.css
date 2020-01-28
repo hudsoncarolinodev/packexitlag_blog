@@ -63,7 +63,7 @@
 @media(max-width: 992px){
     .header{ padding: 23px 0; }
     .logo{ display: flex; align-items: center; justify-content: space-between; width: 100%; }
-    .menu{ position: absolute; top: 81px; width: 100%; text-align: center; display: none; }
+    .menu{ position: absolute; top: 81px; width: 100%; text-align: center; display: none;left: 0; }
     .menu li{ margin-right: 0; }
     .menu li a{ font-size: 18px; padding: 18px 0;  font-weight: 700; }
     .menu li a::after{ display: none; }
@@ -140,7 +140,7 @@
 .nav-blog ul li a:hover::after{ width: 100%; }
 .active-link-blog{ color: #a10a0b !important; } 
 .active-link-blog::after{ background-color: #a10a0b !important; width: 100%!important; } 
-.search-blog{ width: 325px; border: 2px solid #a1a1a1; border-radius: 30px; padding: 11px 20px; display: flex; justify-content: space-between; }
+.search-blog{ width: 370px; border: 2px solid #a1a1a1; border-radius: 30px; padding: 11px 20px; display: flex; justify-content: space-between; }
 .search-blog input{ background-color: transparent; color: #a1a1a1; font-size: 18px; font-weight: 700; }
 .search-blog input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */ color: #a1a1a1; opacity: 1; font-weight: 700; font-size: 18px; /* Firefox */ }
 .search-blog input:-ms-input-placeholder { /* Internet Explorer 10-11 */ color: #a1a1a1; font-weight: 700; font-size: 18px; }
@@ -173,7 +173,33 @@
 .star-main-post-blog span{ font-size: 18px; line-height: 18px; }
 .star-main-post-blog p{ font-size: 16px; text-transform: uppercase; margin-left: 10px; font-weight: 700; line-height: 16px; }
 .contain-block-posts-blog{ position: relative; margin-bottom: 50px; }
-.contain-block-posts-blog h2{ font-size: 30px; line-height: 35px; color: #8a0e10; margin-bottom: 40px; }
+.contain-block-posts-blog img{
+    max-width: 290px;
+}
+.areaDestaque{
+    overflow: hidden;
+    height: 415px;
+}
+.paginador{
+
+    }
+        .paginador a{
+            padding: 0 18px;
+            height: 30px;
+            border: 2px solid transparent;
+            border-radius: 7px;
+            color:#fff;
+            display: inline-block;
+            margin: 0 5px;
+            line-height: 25px;
+        }
+        .paginador a:hover{
+            border: 2px solid #a1a1a1;
+        }
+        .numero.selecionado{
+             border: 2px solid #a1a1a1;
+        }
+.contain-block-posts-blog h2{ font-size: 30px; line-height: 35px; color: #8a0e10; margin-bottom: 40px;padding-top: 50px; }
 .contain-block-posts-blog .block-post-blog .each-post-blog{ position: relative; width: 30%; }
 .block-post-blog{ justify-content: space-between; }
 .each-post-blog{ position: relative; align-items: center; color: #fff; transition: .3s linear; }

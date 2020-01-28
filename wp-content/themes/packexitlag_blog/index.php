@@ -11,163 +11,119 @@
  *
  * @package packexitlag_blog
  */
-
+$current_category = get_queried_object();
 get_header();
 ?>
-
-	<section class="section-header-blog">
-		<div class="container">
-			<h1>Blog</h1>
-			<nav class="nav-blog">
+<section class="section-header-blog">
+	<div class="container">
+		<h1>Blog</h1>
+		<nav class="nav-blog">
+			<div class="scroll-nav-mobile">
 				<div class="scroll-nav-mobile">
 					<ul>
-					<li>
-						<a class="transition active-link-blog" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
-					</li>
-					<li>
-						<a class="transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">Todos os posts</a>
-					</li>
-					<?php
-						$i =0;
-						$categorias = get_categories();
-						foreach ($categorias as $categorias):
-							$nomeCategoria = $categorias->name;
-							$linkCategoria = get_category_link( $categorias->cat_ID );
-							if($i <5):
-					?>
-					<li>
-						<a  class="transition" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
-					</li>
-					<?php endif;$i++; endforeach; ?>
+						<li>
+							<a class="transition" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
+						</li>
+						<li>
+							<a class="transition" href="<?php echo esc_url( home_url( '/todos-os-posts/' ) ); ?>">Todos os posts</a>
+						</li>
+						<?php
+							$i =0;
+							$categorias = get_categories();
+							foreach ($categorias as $categorias):
+								$nomeCategoria = $categorias->name;
+								$linkCategoria = get_category_link( $categorias->cat_ID );
+
+								if($i <5):
+						?>
+						<li>
+							<a  class="transition <?php if($current_category->name == $categorias->name){echo "active-link-blog";}?>" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
+						</li>
+						<?php endif;$i++; endforeach; ?>
 					</ul>
 				</div>
-				
-				<div class="search-blog">
-					<form role="search" method="get" action="<?php echo home_url( '/' ); ?>">
-						<input type="text" name="s" id="search" placeholder="Buscar">
-						<button type="submit" class="fas fa-search"></button>
-					</form>
-				</div>
-			</nav>
-		</div>
-	</section>
+			</div>
 
-	<section class="section-content-blog">
-		<div class="container">
-			<?php 
-				$postDestaque = new WP_Query(
-					array(
-						'post_type' => 'post',
-						'posts_per_page' => 1, 
-						'orderby' => 'id',
-						'tax_query' => array(
-							array(
-								'taxonomy' => "category",
-								'field'    => 'slug',
-								'terms'    => "destaques",
-							)
-						)
-					)
-				);
-			?>
+			<div class="search-blog">
+				<form role="search" method="get" action="<?php echo home_url( '/' ); ?>">
+					<input type="text" name="s" id="search" placeholder="Buscar">
+					<button type="submit" class="fas fa-search"></button>
+				</form>
+			</div>
+		</nav>
+		<span class="border-cat-blog-post"></span>
+	</div>
+</section>
+
+<section class="section-content-blog">
+	<div class="container">		
+
+		<div class="contain-block-posts-blog">
+			<h2>Todos os posts</h2>
 
 			<?php
-			while($postDestaque->have_posts()): $postDestaque->the_post();
-				$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
-				$categoriasPost = get_the_category();
-				foreach ($categoriasPost as $categoria){
-					$categoriaPostNome = $categoria->name;
-					$categoriaPostLink = get_category_link($categoria->cat_ID);
-				}
+				while(have_posts()): the_post();
+					$imagem_post = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
+					$categoriasPost = get_the_category();
 			?>
-			<a href="<?php echo get_permalink() ?>" class="main-post-blog">
-				<img src="<?php echo $imagem_destaque; ?>" alt="<?php echo get_the_title()?>">
-				<div class="contain-main-post-blog">
-					<div class="content-main-post-blog">
-						<p><?php echo the_time('j M Y'); ?></p>
-						<h2><?php echo get_the_title()?></h2>
-					</div>
-					<div class="star-main-post-blog">
-						<span class="far fa-star"></span>
-						<p><?= $categoriaPostNome; ?></p>
-					</div>
+
+			<a href="<?php echo get_permalink();?>" class="each-post-blog margin-each-post-blog flex">
+				<div class="img-post-blog">
+					<img src="<?php echo $imagem_post; ?>" alt="<?php echo get_the_title(); ?>">
 				</div>
+				<div class="container-post-blog">
+					<h3 class="title-post-blog"><?php echo get_the_title(); ?></h3>
+					<div class="cat-post-blog flex">
+						<p><?php echo the_time('j \d\e F \d\e Y') ; ?></p>
+						<span>|</span>
+						<?php 
+							$cont = 0;
+							foreach ($categoriasPost as $categoria){
+								if($cont == 0){
+									echo '<p>' . $categoria->name . '</p>';
+								}
+								$cont ++;
+							}
+						?>
+					</div>
+					<p class="paragraph-post-blog"><?php echo get_the_excerpt(); ?></p>
+				</div>					
 			</a>
-			<?php endwhile; ?>
 
-			<div class="contain-block-posts-blog">
-				<h2>Os mais populares</h2>
-				<div class="block-post-blog flex">
+			<?php endwhile; wp_reset_query(); ?>
+
+			<div class="pagination-blog">
+				<!-- <button class="fas fa-angle-left"></button>
+				<div class="box-pagination-blog">
+					1
+				</div>
+				<button class="fas fa-angle-right"></button>
+				<p>de</p>
+				<p>50</p> -->
+				<div class="paginador">
 					<?php 
-						$args = ['numberposts' => 3];
-						$recent_posts = wp_get_recent_posts( $args, ARRAY_A );
-						foreach($recent_posts as $recent_posts):
-								$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($recent_posts['ID'] ), 'full' )[0];
+					if(function_exists('pagination')){
+						pagination($additional_loop->$max_num_pages);
+					}
 					?>
-					<a href="<?php echo  get_permalink($recent_posts['ID']) ?>" class="each-post-blog">
-						<div class="img-post-blog">
-							<img src="<?php echo $imagem_destaque ?>" alt="<?php echo $recent_posts['post_title'] ?>">
-						</div>
-						<h3 class="title-post-blog"><?php echo $recent_posts['post_title'] ?></h3>
-						<div class="cat-post-blog flex">
-							<p>07 de de setembro de 2019 </p>
-							<span>|</span>
-							<p>Jogos</p>
-						</div>
-					</a>
-				  <?php endforeach;?>
 				</div>
 			</div>
+		</div>
+	</div>
+</section>
+
+<?php if($configuracao['opt_box_vermelho_titulo']):?>
+<section class="section-knowing">		
+	<div class="contain-free-test">			
+		<div class="content-free-test">
 			
-			<div class="contain-block-posts-blog">
-				<h2>Últimos posts</h2>
-				<?php 
-					$posts = new WP_Query(
-						array(
-							'post_type' => 'post',
-							'posts_per_page' => 5, 
-							'orderby' => 'id',
-						)
-					);
-
-					while($posts->have_posts()): $posts->the_post();
-						$imagem_destaque = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
-						$categoriasPost = get_the_category();
-						foreach ($categoriasPost as $categoria){
-							$categoriaPostNome = $categoria->name;
-							$categoriaPostLink = get_category_link($categoria->cat_ID);
-						}
-				?>
-				<a href="<?php echo get_permalink() ?>" class="each-post-blog margin-each-post-blog flex">
-					<div class="img-post-blog">
-						<img src="<?php echo $imagem_destaque; ?>" alt="<?php echo get_the_title()?>">
-					</div>
-					<div class="container-post-blog">
-						<h3 class="title-post-blog"><?php echo get_the_title()?></h3>
-						<div class="cat-post-blog flex">
-							<p><?php echo the_time('j M Y'); ?></p>
-							<span>|</span>
-							<p><?= $categoriaPostNome; ?></p>
-						</div>
-						<p class="paragraph-post-blog"><?php the_excerpt(); ?></p>
-					</div>					
-				</a>
-				<?php endwhile; ?>
-				<a class="button-all-posts-blog transition" href="<?php echo esc_url( home_url( '/category/todos-os-posts/' ) ); ?>">ver todos os posts <span class="fas fa-angle-right"></span></a>
-
-			</div>
-		</div>
-	</section>
-
-	<section class="section-knowing">		
-		<div class="contain-free-test">			
-			<div class="content-free-test">
-				<h3>Teste grátis por 3 dias,</h3>
-				<h3>sem cadastro do cartão de crédito! Conheça o ExitLag.</h3>
-				<a class="button-teste-gratis transition" href="https://www.exitlag.com/pt/teste-gratis">Teste Grátis<span class="fas fa-angle-right"></span></a>			
-			</div>					
-		</div>
-	</section>
-
+			<h3><?php echo $configuracao['opt_box_vermelho_titulo']; ?></h3>
+			<?php 	 if($configuracao['opt_box_vermelho_tituloLink']): ?>
+			<a class="button-teste-gratis transition" href="<?php echo $configuracao['opt_box_vermelho_tituloLink']; ?>">Teste Grátis<span class="fas fa-angle-right"></span></a>	
+			<?php endif; ?>		
+		</div>					
+	</div>
+</section>
+<?php endif;	?>
 <?php
 get_footer();

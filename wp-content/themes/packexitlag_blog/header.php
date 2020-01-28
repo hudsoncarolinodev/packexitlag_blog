@@ -8,7 +8,7 @@
  *
  * @package packexitlag_blog
  */
-
+global $configuracao;
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -34,6 +34,9 @@
 	<meta name="msapplication-TileImage" content="<?php echo get_template_directory_uri(); ?>/img/favicon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css" rel="stylesheet">
+	
 	<?php wp_head(); ?>
 </head>
 
@@ -45,7 +48,7 @@
 		<div class="container-header flex">
 			<div class="logo">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<img src="<?php echo get_template_directory_uri(); ?>/img/exitlag.png" alt="<?php bloginfo( 'name' ); ?>">
+					<img src="<?php echo $configuracao['opt_logo']['url'] ?> " alt="<?php bloginfo( 'name' ); ?>">
 				</a>
 				<button class="hamburger hamburger--collapse hide show-992">
 					<span class="hamburger-box">
@@ -53,7 +56,7 @@
 					</span>
 				</button>
 			</div>
-			<ul class="menu flex hide-992 show-992-min">
+			<!--<ul class="menu flex hide-992 show-992-min">
 				<li class="transition">
 					<a class="transition" href="https://www.exitlag.com/pt/jogos/">Jogos</a>
 				</li>
@@ -75,7 +78,15 @@
 				<li class="transition">
 					<a class="transition" href="https://www.exitlag.com/pt/teste-gratis/">Teste Grátis <span class="fas fa-angle-right"></span></a>
 				</li>
-			</ul>
+			</ul> -->
+			<?php 
+
+				wp_nav_menu( array(
+				    'menu'       => 'Menu Portugues',
+				    'menu_class' => "menu flex hide-992 show-992-min", 
+				) );
+
+			?>
 		</div>			
 	</div>
 </header>

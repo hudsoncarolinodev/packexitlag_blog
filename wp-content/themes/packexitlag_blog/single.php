@@ -6,7 +6,7 @@
  *
  * @package packexitlag_blog
  */
-
+wpb_set_post_views(get_the_ID());
 global $post;
 
 $imagem_post = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0];
@@ -29,23 +29,24 @@ get_header();
 			<div class="scroll-nav-mobile">
 				<ul>
 					<li>
-						<a class="transition" href="blog.html">Início</a>
+						<a class="transition" href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a>
 					</li>
 					<li>
-						<a class="transition" href="todos-posts.html">Todos os posts</a>
+						<a class="transition" href="<?php echo esc_url( home_url( '/todos-os-posts/' ) ); ?>">Todos os posts</a>
 					</li>
+					<?php
+						$i =0;
+						$categorias = get_categories();
+						foreach ($categorias as $categorias):
+							$nomeCategoria = $categorias->name;
+							$linkCategoria = get_category_link( $categorias->cat_ID );
+
+							if($i <5):
+					?>
 					<li>
-						<a class="transition" href="updates.html">Updates</a>
+						<a  class="transition <?php if($current_category->name == $categorias->name){echo "active-link-blog";}?>" href="<?php echo $linkCategoria; ?>"><?php echo $nomeCategoria; ?></a>
 					</li>
-					<li>
-						<a class="transition" href="destaques.html">Destaques</a>
-					</li>
-					<li>
-						<a class="transition" href="novidades.html">Novidades</a>
-					</li>
-					<li>
-						<a class="transition" href="jogos.html">Jogos</a>
-					</li>
+					<?php endif;$i++; endforeach; ?>
 				</ul>
 			</div>
 
@@ -64,7 +65,7 @@ get_header();
 			<a class="link-back-blog-post transition" href="javascript: history.go(-1)"><span class="fas fa-angle-left"></span>Voltar</a>
 			<h2><?php echo get_the_title(); ?></h2>
 			<div class="cat-post-blog flex">
-				<p><?php echo the_date('j \d\e F \d\e Y'); ?></p>
+				<p><?php echo the_time('j \d\e F \d\e Y'); ?></p>
 				<span>|</span>
 				<?php 
 					foreach($categoriaAtual as $categoria) {
@@ -117,7 +118,7 @@ get_header();
 							if($idCategoriaAtual == $idCateogriaRelacionado && $idPostAtual != $idPostRelacionado):
 				?>
 
-				<a href="#" class="each-post-blog">
+				<a href="<?php echo get_permalink(); ?>" class="each-post-blog">
 					<div class="img-post-blog">
 						<img src="<?php echo wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' )[0]; ?>" alt="<?php echo get_the_title(); ?>">
 					</div>
@@ -134,21 +135,25 @@ get_header();
 		</div>
 
 		<div class="pagination-post-blog">
-			<a class="transition" href="#"><span class="fas fa-angle-left"></span>Post anterior</a>
-			<a class="transition" href="todos-posts.html">Todos os posts</a>
-			<a class="transition" href="#">próximo post<span class="fas fa-angle-right"></span></a>
+			<?php previous_post_link('%link', '<span class="fas fa-angle-left"></span>Post anterior'); ?>
+			<a class="transition" href="<?php echo  home_url( '/todos-os-posts/' ); ?>">Todos os posts</a>
+			<?php next_post_link('%link', 'próximo post<span class="fas fa-angle-right"></span>'); ?>
 		</div>
 	</div>
 </section>
 
+<?php if($configuracao['opt_box_vermelho_titulo']):?>
 <section class="section-knowing">		
 	<div class="contain-free-test">			
 		<div class="content-free-test">
-			<h3>Teste grátis por 3 dias,</h3>
-			<h3>sem cadastro do cartão de crédito! Conheça o ExitLag.</h3>
-			<a class="button-teste-gratis transition" href="cadastro.html">Teste Grátis<span class="fas fa-angle-right"></span></a>			
+			
+			<h3><?php echo $configuracao['opt_box_vermelho_titulo']; ?></h3>
+			<?php 	 if($configuracao['opt_box_vermelho_tituloLink']): ?>
+			<a class="button-teste-gratis transition" href="<?php echo $configuracao['opt_box_vermelho_tituloLink']; ?>">Teste Grátis<span class="fas fa-angle-right"></span></a>	
+			<?php endif; ?>		
 		</div>					
 	</div>
 </section>
+<?php endif;	?>
 
 <?php get_footer();

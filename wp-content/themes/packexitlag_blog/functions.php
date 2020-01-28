@@ -123,18 +123,18 @@ function packexitlag_blog_scripts() {
 
 
 	//FONTS
-	wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf');
+	// wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf');
 	wp_enqueue_style( 'googleapis', 'https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap');
-	wp_enqueue_style( 'cloudflare', 'https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css');
-	wp_enqueue_style( 'jquery', 'https://code.jquery.com/jquery-3.3.1.min.js');
+	//wp_enqueue_style( 'cloudflare', 'https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css');
+	//wp_enqueue_style( 'jquery', 'https://code.jquery.com/jquery-3.3.1.min.js');
 
 	//CSS
 	wp_enqueue_style( 'packexitlag_blog-reset', get_template_directory_uri() . '/css/reset.css');
 	wp_enqueue_style( 'packexitlag_blog-style', get_stylesheet_uri() );
 
 	//JAVA SCRIPT
-	wp_enqueue_script( 'packexitlag_blog-scripts', get_template_directory_uri() . '/js/scripts.js' );
-	wp_enqueue_script( 'packexitlag_blog-forms', get_template_directory_uri() . '/js/js-forms.js' );
+	//wp_enqueue_script( 'packexitlag_blog-scripts', get_template_directory_uri() . '/js/scripts.js' );
+	// wp_enqueue_script( 'packexitlag_blog-forms', get_template_directory_uri() . '/js/js-forms.js' );
 
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -256,4 +256,193 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 		$scripts->default_version = "13012020";
 	}
 	add_action("wp_default_scripts", "my_wp_default_scripts");
+
+
+
+
+	add_filter( 'rwmb_meta_boxes', 'registraMetaboxes' );
+	function registraMetaboxes( $metaboxes ){
+
+		$prefix = 'Exitlag_';
+
+		// METABOX DE DESTAQUE
+		$metaboxes[] = array(
+
+			'id'			=> 'detalhesPost',
+			'title'			=> 'Detalhes do Destaque - Campos não obrigatórios',
+			'pages' 		=> array( 'post' ),
+			'context' 		=> 'normal',
+			'priority' 		=> 'high',
+			'autosave' 		=> false,
+			'fields' 		=> array(
+				
+				array(
+					'name'  => 'Deixar em destaque',
+					'id'    => "{$prefix}post_carrossel_destaque",
+					'desc'  => 'Marque este campo para deixar o post em destaque na página inicial',
+					'type'      => 'switch',
+				    'style'     => 'rounded',
+				    'on_label'  => 'Ativo',
+				    'off_label' => 'Inativo',
+				),	
+
+				array(
+					'name'  => 'DESTAQUE',
+					'id'    => "{$prefix}post_carrossel_destaque_Updates",
+					'desc'  => 'Marque este campo para adicionar selo DESTAQUE',
+					'type'      => 'switch',
+				    'style'     => 'rounded',
+				    'on_label'  => 'Ativo',
+				    'off_label' => 'Inativo',
+				),	
+
+				array(
+					'name'  => 'Imagem específica para o destaque',
+					'id'    => "{$prefix}post_carrossel_destaque_foto",
+					'desc'  => 'Adicione uma imagem específica para o banner destaque - tamanho mínimo: 590 x 415',
+					'type' => 'single_image',
+				),	
+								
+			),
+		);
+
+		// METABOX DE DESTAQUE
+		$metaboxes[] = array(
+
+			'id'			=> 'detalhesPost',
+			'title'			=> 'Detalhes do Destaque - Campos não obrigatórios',
+			'pages' 		=> array( 'posten' ),
+			'context' 		=> 'normal',
+			'priority' 		=> 'high',
+			'autosave' 		=> false,
+			'fields' 		=> array(
+				
+				array(
+					'name'  => 'Deixar em destaque',
+					'id'    => "{$prefix}posten_carrossel_destaque",
+					'desc'  => 'Marque este campo para deixar o post em destaque na página inicial',
+					'type'      => 'switch',
+				    'style'     => 'rounded',
+				    'on_label'  => 'Ativo',
+				    'off_label' => 'Inativo',
+				),	
+
+				array(
+					'name'  => 'UPDATES',
+					'id'    => "{$prefix}posten_carrossel_destaque_Updates",
+					'desc'  => 'Marque este campo para deixar o post em UPDATES',
+					'type'      => 'switch',
+				    'style'     => 'rounded',
+				    'on_label'  => 'Ativo',
+				    'off_label' => 'Inativo',
+				),	
+
+				array(
+					'name'  => 'Imagem específica para o destaque',
+					'id'    => "{$prefix}posten_carrossel_destaque_foto",
+					'desc'  => 'Adicione uma imagem específica para o banner destaque - tamanho mínimo: 590 x 415',
+					'type' => 'single_image',
+				),	
+								
+			),
+		);
+
+		return $metaboxes;
+	}
+
+	tipoDestaque();
+	// CUSTOM POST TYPE DESTAQUES
+	function tipoDestaque() {
+
+		$rotulosDestaque = array(
+								'name'               => 'Post en',
+								'singular_name'      => 'post en',
+								'menu_name'          => 'Posts en',
+								'name_admin_bar'     => 'Posts en',
+								'add_new'            => 'Adicionar novo',
+								'add_new_item'       => 'Adicionar novo post en',
+								'new_item'           => 'Novo post en',
+								'edit_item'          => 'Editar post en',
+								'view_item'          => 'Ver post en',
+								'all_items'          => 'Todos os Posts en',
+								'search_items'       => 'Buscar post en',
+								'parent_item_colon'  => 'Dos Posts en',
+								'not_found'          => 'Nenhum post en cadastrado.',
+								'not_found_in_trash' => 'Nenhum post en na lixeira.'
+							);
+
+		$argsDestaque 	= array(
+								'labels'             => $rotulosDestaque,
+								'public'             => true,
+								'publicly_queryable' => true,
+								'show_ui'            => true,
+								'show_in_menu'       => true,
+								'menu_position'		 => 4,
+								'menu_icon'          => 'dashicons-megaphone',
+								'query_var'          => true,
+								'rewrite'            => array( 'slug' => 'all-posts' ),
+								'capability_type'    => 'post',
+								'has_archive'        => true,
+								'hierarchical'       => false,
+								'supports'           => array( 'title','thumbnail', 'editor','excerpt')
+							);
+
+		// REGISTRA O TIPO CUSTOMIZADO
+		register_post_type('posten', $argsDestaque);
+
+	}
+
+	taxonomiaCategoriaDestaque();
+	// TAXONOMIA DE DESTAQUE
+		function taxonomiaCategoriaDestaque() {
+
+			$rotulosCategoriaDestaque = array(
+				'name'              => 'Categorias de post',
+				'singular_name'     => 'Categoria de post',
+				'search_items'      => 'Buscar categorias de post',
+				'all_items'         => 'Todas as categorias de post',
+				'parent_item'       => 'Categoria de post pai',
+				'parent_item_colon' => 'Categoria de post pai:',
+				'edit_item'         => 'Editar categoria de post',
+				'update_item'       => 'Atualizar categoria de post',
+				'add_new_item'      => 'Nova categoria de post',
+				'new_item_name'     => 'Nova categoria',
+				'menu_name'         => 'Categorias de post',
+				);
+
+			$argsCategoriaDestaque 		= array(
+				'hierarchical'      => true,
+				'labels'            => $rotulosCategoriaDestaque,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'category-post' ),
+				);
+
+			register_taxonomy( 'categoriaposten', array( 'posten' ), $argsCategoriaDestaque );
+
+		}	
+
+
+function wpb_set_post_views($postID) {
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+//To keep the count accurate, lets get rid of prefetching
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+
+
+
+
+
+
+	
 
